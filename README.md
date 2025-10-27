@@ -61,29 +61,18 @@ DOCX, TXT, etc.).
         validación       recall, latencia      
   --------------------------------------------------------------------------
 
-## 🛠️ Stack sugerido para rapidez (PoC ágil)
+## 🛠️ Stack Técnico Sugerido (PoC Ágil)
 
-  --------------------------------------------------------------------------
-  Componente     Opción recomendada         Alternativa self-hosted
-  -------------- -------------------------- --------------------------------
-  Lenguaje       Python 3.10+               Go, NodeJS
+| Componente       | Opción Recomendada                         | Alternativa Self-Hosted            |
+|------------------|---------------------------------------------|------------------------------------|
+| **Lenguaje**     | Python 3.10+                                | Go, NodeJS                         |
+| **Framework IA** | LangChain                                   | LlamaIndex                         |
+| **Vector DB**    | pgvector (extensión PostgreSQL existente)   | Qdrant / Weaviate                  |
+| **Embeddings**   | OpenAI `text-embedding-3-large`             | InstructorXL (HuggingFace)         |
+| **LLM**          | GPT-4o                                      | Llama 3 70B                        |
+| **Storage**      | AWS S3                                      | MinIO                              |
+| **Framework API**| FastAPI                                     | Flask                              |
 
-  Framework IA   LangChain                  LlamaIndex
-
-  Vector DB      pgvector (extensión        Qdrant / Weaviate
-                 PostgreSQL existente)      
-
-  Embeddings     OpenAI                     InstructorXL (HuggingFace)
-                 `text-embedding-3-large`   
-
-  LLM            GPT-4o                     Llama 3 70B
-
-  Storage        AWS S3                     MinIO
-
-  Framework API  FastAPI                    Flask
-
-  Infra temporal Docker Compose             Kubernetes (en etapa posterior)
-  --------------------------------------------------------------------------
 
 ## 📊 Criterios de Éxito de la PoC
 
