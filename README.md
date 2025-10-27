@@ -83,33 +83,16 @@ DOCX, TXT, etc.).
 
 ## 🚀 Próximos pasos (roadmap)
 
-  -----------------------------------------------------------------------
-  Fase              Actividad         Duración estimada Resultado
-  ----------------- ----------------- ----------------- -----------------
-  ✅ 1              Definir dataset   1 día             Scope PoC
-                    inicial (100 docs                   
-                    mixtos)                             
-
-  ✅ 2              Preparar ambiente 1-2 días          Entorno
-                    local                               configurado
-
-  🛠️ 3              Implementar       2-3 días          Datos legibles
-                    extracción y                        
-                    parsing                             
-
-  🧠 4              Embedding +       2 días            Vector DB activa
-                    vector DB                           
-
-  🤖 5              RAG con interfaz  2 días            Demostrador
-                    simple                              funcional
-
-  📊 6              Validación de     1-2 días          Reporte PoC
-                    precisión                           
-
-  📍 7              Estimación de     1 día             Go/No-Go
-                    costos & escalado                   
-  -----------------------------------------------------------------------
-
+| Fase              | Actividad                                 | Duración estimada | Resultado           |
+|-------------------|-------------------------------------------|-------------------|---------------------|
+|✅ 1              | Definir dataset inicial (100 docs mixtos) | 1 día             | Scope PoC           |
+|✅ 2              | Preparar ambiente local                   | 1-2 días          | Entorno configurado |
+|🛠️ 3              | Implementar extracción y parsing          | 2-3 días          | Datos legibles      |
+|🧠 4              | Embedding + vector DB                     | 2 días            | Vector DB activa    |
+|🤖 5              | RAG con interfaz simple funcional         | 2 días            | Demostrador         |
+|📊 6              | Validación de precisión                   | 1-2 días          | Reporte PoC         |
+|📍 7              | Estimación de costos & escalado           | 1 día             | Go/No-Go            |
+  
 ## 📁 Estructura sugerida de repositorio
 
     /poc-rag-docs/
