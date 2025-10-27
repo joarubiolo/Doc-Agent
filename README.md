@@ -85,25 +85,16 @@ DOCX, TXT, etc.).
   Infra temporal Docker Compose             Kubernetes (en etapa posterior)
   --------------------------------------------------------------------------
 
-## 📊 Criterios de éxito de la PoC
+## 📊 Criterios de Éxito de la PoC
 
-  ------------------------------------------------------------------------
-  Métrica         Criterio exitoso                   Validación
-  --------------- ---------------------------------- ---------------------
-  Tiempo de       \< 3s promedio para búsqueda + RAG Prueba controlada
-  respuesta                                          
-
-  Relevancia      ≥ 75% (feedback experto)           Ranking manual / Q&A
-
-  Robustez        Indexar ≥100 docs sin errores      Stress inicial
-
-  Costos          Alineado al presupuesto            Estimación mensual
-
-  Facilidad de    Integrable al pipeline actual      Validación
-  integración                                        arquitectura
-
-  Escalabilidad   Proyectable a 10K documentos       Evaluación técnica
-  ------------------------------------------------------------------------
+| Métrica                  | Criterio Exitoso                         | Validación / Método                |
+|---------------------------|------------------------------------------|------------------------------------|
+| **Tiempo de respuesta**   | < 3s promedio para búsqueda + RAG        | Prueba controlada                  |
+| **Relevancia**            | ≥ 75% (feedback experto)                | Ranking manual / Q&A               |
+| **Robustez**              | Indexar ≥ 100 documentos sin errores     | Prueba de estrés inicial           |
+| **Costos**                | Alineado al presupuesto                  | Estimación mensual                 |
+| **Facilidad de integración** | Integrable al pipeline actual          | Validación de arquitectura         |
+| **Escalabilidad**         | Proyectable a 10K documentos             | Evaluación técnica                 |
 
 ## 🚀 Próximos pasos (roadmap)
 
