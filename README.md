@@ -135,3 +135,287 @@ DOCX, TXT, etc.).
     │   ├── settings.yaml
     │
     └── README.md
+
+
+## 🧩 PLAN TÉCNICO GRANULAR POR MÓDULO
+
+### 1. Extracción PostgreSQL
+
+    Objetivo: Obtener documentos codificados en base64 desde una tabla de PostgreSQL.
+    
+    Stack:
+    
+    psycopg2 o SQLAlchemy
+    
+    pandas (para manipular resultados)
+    
+    dotenv o pydantic para configuración
+    
+    Tareas:
+    
+    Conectar a la base PostgreSQL usando credenciales desde .env.
+    
+    Ejecutar query SELECT id, filename, data_base64 FROM documentos.
+    
+    Guardar cada resultado en /tmp/files/{id}_{filename}.
+    
+    Registrar logs de extracción con timestamps.
+    
+    Manejar errores de conexión y timeouts.
+    
+    Output: Archivos binarios temporales (base64 intactos).
+    Criterio de éxito: 100% de los registros válidos descargados.
+
+### 2. Extracción desde S3
+
+    Objetivo: Descargar archivos binarios (PDF, DOCX, TXT, etc.) desde buckets S3.
+    
+    Stack:
+    
+    boto3
+    
+    dotenv o yaml para configuraciones
+    
+    Tareas:
+    
+    Configurar conexión a AWS S3 (credenciales IAM, región, bucket).
+    
+    Listar archivos bajo prefijo (/docs/).
+    
+    Descargar archivos a /tmp/files/.
+    
+    Validar tamaño y checksum.
+    
+    Manejar excepciones (ClientError, NoSuchKey).
+    
+    Output: Archivos locales descargados.
+    Criterio de éxito: 100% de los archivos descargados sin errores.
+
+### 3. Decodificación
+
+    Objetivo: Convertir documentos base64 a su formato original binario.
+    
+    Stack:
+    
+    base64
+    
+    os, io
+    
+    Tareas:
+    
+    Leer archivos .b64.
+    
+    Decodificar usando base64.b64decode().
+    
+    Guardar como .pdf, .docx, .txt según metadata.
+    
+    Validar integridad (intentos de apertura).
+    
+    Output: Archivos binarios “ready”.
+    Criterio de éxito: Todos los archivos decodificables se convierten sin error.
+
+### 4. Parsing de contenido
+
+    Objetivo: Convertir documentos binarios a texto limpio.
+    
+    Stack:
+    
+    Apache Tika o textract
+    
+    pdfplumber / docx / PyMuPDF
+    
+    Tareas:
+    
+    Detectar tipo MIME (PDF, DOCX, TXT).
+    
+    Extraer texto.
+    
+    Limpiar saltos de línea, caracteres no imprimibles, duplicados.
+    
+    Guardar .txt con mismo ID en /parsed/.
+    
+    Output: Texto plano por documento.
+    Criterio de éxito: ≥95% de texto legible en archivos válidos.
+
+### 5. Chunking
+
+    Objetivo: Dividir documentos en bloques útiles para embeddings.
+    
+    Stack:
+    
+    LangChain.text_splitter
+    
+    tiktoken (para limitar tokens)
+    
+    numpy o pandas
+    
+    Tareas:
+    
+    Definir tamaño de chunk (p.ej. 500 tokens con 50 de solapamiento).
+    
+    Aplicar sobre cada texto.
+    
+    Generar lista con chunk_id, source_id, text_chunk.
+    
+    Exportar DataFrame a /chunks/.
+    
+    Output: Lista de chunks listos para embedding.
+    Criterio de éxito: Todos los documentos divididos de forma consistente.
+
+### 6. Generación de embeddings
+
+    Objetivo: Convertir chunks en vectores semánticos.
+    
+    Stack:
+    
+    openai (text-embedding-3-large) o InstructorEmbedding (HF)
+    
+    tqdm para tracking
+    
+    Tareas:
+    
+    Cargar cada chunk de texto.
+    
+    Llamar API de embeddings en batch (manejar rate limits).
+    
+    Guardar vectores + metadata (chunk_id, source_id, embedding).
+    
+    Persistir en archivo parquet o JSONL.
+    
+    Output: Matriz de embeddings con metadata.
+    Criterio de éxito: ≥99% de embeddings generados correctamente.
+
+### 7. Almacenamiento en Vector DB
+
+    Objetivo: Persistir embeddings y metadata en pgvector o Qdrant.
+    
+    Stack:
+    
+    pgvector (PostgreSQL extension)
+    
+    SQLAlchemy / psycopg2
+    
+    Tareas:
+    
+    Crear tabla:
+    
+    CREATE TABLE documents_vectors (
+      id SERIAL PRIMARY KEY,
+      doc_id TEXT,
+      chunk_id TEXT,
+      content TEXT,
+      embedding VECTOR(1536)
+    );
+    
+    
+    Insertar embeddings en batch.
+    
+    Implementar índice vectorial (ivfflat).
+    
+    Verificar búsqueda vectorial con cosine_distance.
+    
+    Output: Base vectorial consultable.
+    Criterio de éxito: Latencia < 300ms por consulta top-K.
+
+### 8. Motor RAG
+
+    Objetivo: Integrar recuperación semántica + LLM para generar respuestas.
+    
+    Stack:
+    
+    LangChain o LlamaIndex
+    
+    FastAPI
+    
+    OpenAI GPT-4o o Llama 3 70B
+    
+    Tareas:
+    
+    Implementar Retriever que:
+    
+    Reciba la query del usuario.
+    
+    Busque los top-K chunks similares.
+    
+    Implementar LLM Handler:
+    
+    Construya prompt contextual (query + chunks).
+    
+    Llame al modelo LLM.
+    
+    Devolver respuesta enriquecida + referencias.
+    
+    Output: Respuestas naturales con contexto citado.
+    Criterio de éxito: ≥75% de relevancia en validación manual.
+
+### 9. Métricas y Validación
+
+    Objetivo: Medir precisión, recall, latencia y robustez.
+    
+    Stack:
+    
+    scikit-learn (precision/recall)
+    
+    time, logging
+    
+    matplotlib o seaborn
+    
+    Tareas:
+    
+    Generar conjunto de Q&A de prueba.
+    
+    Medir:
+    
+    Tiempo total por consulta.
+    
+    Relevancia (top-K).
+    
+    Fallos por tipo de documento.
+    
+    Documentar resultados en reporte final PoC.
+    
+    Output: Informe con KPIs técnicos y gráficos.
+    Criterio de éxito: Cumplir métricas definidas (<3s, ≥75% relevancia).
+
+### 10. Infraestructura y Despliegue
+
+    Objetivo: Ejecutar PoC de forma reproducible y portable.
+    
+    Stack:
+    
+    Docker Compose
+    
+    FastAPI + Uvicorn
+    
+    .env + settings.yaml
+    
+    Tareas:
+    
+    Crear contenedores para:
+    
+    API (FastAPI)
+    
+    PostgreSQL con extensión pgvector
+    
+    Tika o extractor de texto
+    
+    Configurar red interna y volúmenes persistentes.
+    
+    Verificar endpoints /health, /query, /embedding.
+    
+    Output: PoC ejecutable con un solo comando.
+    Criterio de éxito: docker-compose up levanta entorno funcional completo.
+
+### 📊 Resumen de dependencias entre módulos
+PostgreSQL ─┐
+S3 ─────────┤
+             ↓
+      Extracción + Decodificación
+             ↓
+         Parsing → Chunking
+             ↓
+        Embeddings → Vector DB
+             ↓
+           RAG Engine
+             ↓
+          Validación
