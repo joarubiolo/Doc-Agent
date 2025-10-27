@@ -407,15 +407,15 @@ DOCX, TXT, etc.).
     Criterio de éxito: docker-compose up levanta entorno funcional completo.
 
 ### 📊 Resumen de dependencias entre módulos
-PostgreSQL ─┐
-S3 ─────────┤
-             ↓
-      Extracción + Decodificación
-             ↓
-         Parsing → Chunking
-             ↓
-        Embeddings → Vector DB
-             ↓
-           RAG Engine
-             ↓
-          Validación
+    PostgreSQL ─┐
+    S3 ─────────┤
+                 ↓
+          Extracción + Decodificación
+                 ↓
+             Parsing → Chunking
+                 ↓
+            Embeddings → Vector DB
+                 ↓
+               RAG Engine
+                 ↓
+              Validación
