@@ -26,36 +26,7 @@ DOCX, TXT, etc.).
                             │
      🔍 Retrieval de Top-K similares + metadata
                             │
-     🤖 RAG con LLM (GPT/Llama/Mistral) → Respuesta enriquecida
-
-## 📦 Módulos que deben implementarse (mínimo viable)
-
-    1     Extracción PostgreSQL: Obtener documentos en base64 
-            Output: Archivos binarios temporales
-    
-    2     Extracción desde S3: Descarga de archivos binarios 
-            Output: Archivos locales                                 
-
-    3     Decodificación   base64 → PDF/DOCX/TXT 
-            Output: Binary ready
-
-    4     Parsing de contenido: Convertir binarios a texto
-            Output: Texto limpio por documento                 
-
-    5     Chunking: Dividir documentos en bloques útiles
-            Output: Lista de chunks                     
-
-    6     Generación de embeddings: Crear vectores semánticos
-            Output: Matriz de embeddings                
-
-    7     Almacenamiento en Vector DB: Persistencia de embeddings con metadata
-            Output: Base vectorial consultable              
-
-    8     Motor RAG: LLM + recuperación contextual
-            Output: Respuestas enriquecidas                              
-
-    9     Métricas y validación: Evaluar precisión, recall, latencia
-            Output: Informe PoC      
+     🤖 RAG con LLM (GPT/Llama/Mistral) → Respuesta enriquecida   
 
 ## 🛠️ Stack Técnico Sugerido (PoC Ágil)
 
