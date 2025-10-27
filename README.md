@@ -30,36 +30,32 @@ DOCX, TXT, etc.).
 
 ## 📦 Módulos que deben implementarse (mínimo viable)
 
-  --------------------------------------------------------------------------
-  \#    Módulo           Descripción           Output esperado
-  ----- ---------------- --------------------- -----------------------------
-  1     Extracción       Obtener documentos en Archivos binarios temporales
-        PostgreSQL       base64                
+    1     Extracción PostgreSQL: Obtener documentos en base64 
+            Output: Archivos binarios temporales
+    
+    2     Extracción desde S3: Descarga de archivos binarios 
+            Output: Archivos locales                                 
 
-  2     Extracción desde Descarga de archivos  Archivos locales
-        S3               binarios              
+    3     Decodificación   base64 → PDF/DOCX/TXT 
+            Output: Binary ready
 
-  3     Decodificación   base64 → PDF/DOCX/TXT Binary ready
+    4     Parsing de contenido: Convertir binarios a texto
+            Output: Texto limpio por documento                 
 
-  4     Parsing de       Convertir binarios a  Texto limpio por documento
-        contenido        texto                 
+    5     Chunking: Dividir documentos en bloques útiles
+            Output: Lista de chunks                     
 
-  5     Chunking         Dividir documentos en Lista de chunks
-                         bloques útiles        
+    6     Generación de embeddings: Crear vectores semánticos
+            Output: Matriz de embeddings                
 
-  6     Generación de    Crear vectores        Matriz de embeddings
-        embeddings       semánticos            
+    7     Almacenamiento en Vector DB: Persistencia de embeddings con metadata
+            Output: Base vectorial consultable              
 
-  7     Almacenamiento   Persistencia de       Base vectorial consultable
-        en Vector DB     embeddings con        
-                         metadata              
+    8     Motor RAG: LLM + recuperación contextual
+            Output: Respuestas enriquecidas                              
 
-  8     Motor RAG        LLM + recuperación    Respuestas enriquecidas
-                         contextual            
-
-  9     Métricas y       Evaluar precisión,    Informe PoC
-        validación       recall, latencia      
-  --------------------------------------------------------------------------
+    9     Métricas y validación: Evaluar precisión, recall, latencia
+            Output: Informe PoC      
 
 ## 🛠️ Stack Técnico Sugerido (PoC Ágil)
 
